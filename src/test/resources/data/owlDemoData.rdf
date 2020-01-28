@@ -1,0 +1,32 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns="urn:x-hp:eg/"
+         xml:base="urn:x-hp:eg/">
+	<Computer rdf:about="urn:x-hp:eg/whiteBoxZX">
+		<hasMotherBoard rdf:resource="urn:x-hp:eg/nForce"/>
+		<hasBundle>
+			<GameBundle rdf:about="urn:x-hp:eg/actionPack"/>
+		</hasBundle>
+	</Computer>
+	<Computer rdf:about="urn:x-hp:eg/whiteBoxZX">
+		<hasMotherBoard>
+			<rdf:Description rdf:about="urn:x-hp:eg/unknownMB">
+				<hasGraphics rdf:resource="urn:x-hp:eg/gamingGraphics"/>
+			</rdf:Description>
+		</hasMotherBoard>
+	</Computer>
+	<GamingComputer rdf:about="urn:x-hp:eg/alienBox51"/>
+	<Computer rdf:about="urn:x-hp:eg/bigName42">
+		<hasMotherBoard rdf:resource="urn:x-hp:eg/bigNameSpecialMB"/>
+		<hasBundle rdf:resource="urn:x-hp:eg/binNameSpecialBundle"/>
+	</Computer>
+	<Computer rdf:about="urn:x-hp:eg/bigName42">
+		<hasMotherBoard rdf:resource="urn:x-hp:eg/nForce2"/>
+		<hasBundle rdf:resource="urn:x-hp:eg/binNameSpecialBundle"/>
+	</Computer>
+	<rdf:Description rdf:about="urn:x-hp:eg/bigNameSpecialMB">
+		<owl:differentFrom rdf:resource="urn:x-hp:eg/nForce2"/>
+	</rdf:Description>
+</rdf:RDF>

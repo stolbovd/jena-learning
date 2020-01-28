@@ -1,3 +1,4 @@
+
 package jena.test;
 
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +80,7 @@ public class ReasonerTest {
 	public void derivations() {
 		String trace = null;
 		PrintWriter out = new PrintWriter(System.out);
-		for (StmtIterator i = inf.listStatements(A, p, D); i.hasNext(); ) {
+		for (StmtIterator i = inf.listStatements(A, q, D); i.hasNext(); ) {
 			Statement s = i.nextStatement();
 			System.out.println("Statement is " + s);
 			for (Iterator<Derivation> id = inf.getDerivation(s); id.hasNext(); ) {
