@@ -1,0 +1,62 @@
+@prefix : <urn:x-hp:eg/> .
+@prefix eg: <urn:x-hp:eg/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+eg:budgetGraphics
+  a eg:GraphicsCard .
+
+eg:hasComponent
+  a owl:TransitiveProperty, owl:ObjectProperty .
+
+eg:GamingComputer
+  a owl:Class ;
+  owl:equivalentClass [owl:intersectionOf (eg:Computer
+                                           [a owl:Restriction ;
+                                            owl:hasValue eg:gamingGraphics ;
+                                            owl:onProperty eg:hasComponent]
+                                           [a owl:Restriction ;
+                                            owl:onProperty eg:hasBundle ;
+                                            owl:someValuesFrom eg:GameBundle])] .
+
+eg:DTPGraphics
+  a eg:GraphicsCard .
+
+eg:Computer
+  a owl:Class ;
+  rdfs:subClassOf [owl:intersectionOf ([a owl:Restriction ;
+                                        owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+                                        owl:onProperty eg:hasMotherBoard])] .
+
+eg:GameBundle
+  a owl:Class ;
+  rdfs:subClassOf eg:Bundle .
+
+eg:hasBundle
+  a owl:ObjectProperty ;
+  rdfs:domain eg:Computer .
+
+eg:GraphicsCard
+  a owl:Class .
+
+eg:Bundle
+  a owl:Class .
+
+eg:gamingGraphics
+  a eg:GraphicsCard .
+
+eg:hasMotherBoard
+  a owl:ObjectProperty ;
+  rdfs:domain eg:Computer ;
+  rdfs:range eg:MotherBoard ;
+  rdfs:subPropertyOf eg:hasComponent .
+
+eg:hasGraphics
+  a owl:ObjectProperty ;
+  rdfs:range eg:GraphicsCard ;
+  rdfs:subPropertyOf eg:hasComponent .
+
+eg:MotherBoard
+  a owl:Class .

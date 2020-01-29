@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * Code based on examples from the documentation: https://jena.apache.org/documentation/inference/
  */
 @Slf4j
-public class ReasonerTest {
+public class RDFSReasonerTest {
 
 	String NS = "urn:x-hp:eg/";
 
