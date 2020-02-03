@@ -5,10 +5,12 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix demo: <http://jena.hpl.hp.com/demo#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix eg: <urn:x-hp:eg/> .
 @base <http://www.w3.org/2002/07/owl#> .
 
 [rdf:type owl:Ontology] .
 
+#example 2
 demo:p
   rdf:type owl:AnnotationProperty .
 
@@ -26,3 +28,16 @@ demo:b
 
 demo:c
   demo:p demo:a .
+
+#example
+eg:r
+  eg:concatFirst eg:p .
+
+eg:r
+  eg:concatSecond eg:q .
+
+eg:A
+  eg:p eg:B .
+
+eg:B
+  eg:q eg:C .

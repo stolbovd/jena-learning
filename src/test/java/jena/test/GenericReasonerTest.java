@@ -2,98 +2,65 @@
 package jena.test;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.jena.rdf.model.*;
-import org.apache.jena.reasoner.Derivation;
-import org.apache.jena.reasoner.Reasoner;
-import org.apache.jena.reasoner.ReasonerRegistry;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
+import org.apache.jena.reasoner.rulesys.GenericRuleReasonerFactory;
 import org.apache.jena.reasoner.rulesys.Rule;
-import org.apache.jena.vocabulary.RDFS;
+import org.apache.jena.util.FileManager;
+import org.apache.jena.util.PrintUtil;
+import org.apache.jena.vocabulary.ReasonerVocabulary;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
-
 /**
- * Author is Joshua Taylor
- * https://stackoverflow.com/a/24786478/1396003
  * Code based on examples from the documentation: https://jena.apache.org/documentation/inference/
  */
 @Slf4j
 public class GenericReasonerTest extends ReasonerTest {
 
-	Resource A;
-	Resource B;
-	Resource C;
-	Resource D;
-
-	Property p;
-	Property q;
+	final String demoURI = "http://jena.hpl.hp.com/demo#";
+	final String eg = "urn:x-hp:eg/";
 
 	@Before
 	public void init() {
+		// Load test data
+		data = FileManager.get().loadModel("data/genericDemoData.n3", "N3");
+	}
 
-		// Build a trivial example data set
-		data = ModelFactory.createDefaultModel();
+	@Test
+	public void statements() {
+		// Register a namespace for use in the demo
+		PrintUtil.registerPrefix("demo", demoURI);
+		// Create an (RDF) specification of a hybrid reasoner which
+		// loads its data from an external file.
+		schema = ModelFactory.createDefaultModel();
+		Resource configuration =  schema.createResource();
+		configuration.addProperty(ReasonerVocabulary.PROPruleMode, "hybrid");
+		configuration.addProperty(ReasonerVocabulary.PROPruleSet,  "data/demo.rules");
 
-		A = data.createResource(NS + "A");
-		B = data.createResource(NS + "B");
-		C = data.createResource(NS + "C");
-		D = data.createResource(NS + "D");
-
-		p = data.createProperty(NS, "p");
-		q = data.createProperty(NS, "q");
-
-		// Some small examples (subProperty)
-		data.add(p, RDFS.subPropertyOf, q);
-		A.addProperty(p, "foo" );
-
-		// Get an RDFS reasoner
-		GenericRuleReasoner rdfsReasoner = (GenericRuleReasoner) ReasonerRegistry.getRDFSReasoner();
-		// Steal its rules, and add one of our own, and create a
-		// reasoner with these rules
-		List<Rule> customRules = new ArrayList<>( rdfsReasoner.getRules() );
-		String customRule = "[rule1: (?a eg:p ?b) (?b eg:p ?c) -> (?a eg:p ?c)]";
-		customRules.add( Rule.parseRule( customRule ));
-
-		Reasoner reasoner = new GenericRuleReasoner( customRules );
-		reasoner.setDerivationLogging(true);
+		// Create an instance of such a reasoner
+		reasoner = GenericRuleReasonerFactory.theInstance().create(configuration);
 		infmodel = ModelFactory.createInfModel(reasoner, data);
 
-		// Derivations
-		A.addProperty(p, B);
-		B.addProperty(p, C);
-		C.addProperty(p, D);
+		// Query for all things related to "a" by "p"
+		Resource a = data.getResource(demoURI + "a");
+		Property p = data.getProperty(demoURI, "p");
+		printStatements(a, p, null);
 	}
 
 	@Test
-	public void subProperty() {
-		printStatements(A, q, null);
-	}
-
-	@Test
-	public void listStatements() {
-		printStatements(infmodel.listStatements());
-	}
-	@Test
-	public void derivations() {
-		String trace = null;
-		PrintWriter out = new PrintWriter(System.out);
-		for (StmtIterator i = infmodel.listStatements(A, q, D); i.hasNext(); ) {
-			Statement s = i.nextStatement();
-			System.out.println("Statement is " + s);
-			for (Iterator<Derivation> id = infmodel.getDerivation(s); id.hasNext(); ) {
-				Derivation derivation = (Derivation) id.next();
-				derivation.printTrace(out, true);
-				trace += derivation.toString();
-			}
-		}
-		out.flush();
-		assertNotNull(trace);
+	public void concatenation() {
+		// Register a namespace for use in the demo
+		PrintUtil.registerPrefix("eg", eg);
+		String rules =
+				"[r1: (?c eg:concatFirst ?p), (?c eg:concatSecond ?q) -> " +
+						"     [r1b: (?x ?c ?y) <- (?x ?p ?z) (?z ?q ?y)] ]";
+		reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+		infmodel = ModelFactory.createInfModel(reasoner, data);
+		System.out.println("A *  =>");
+		Resource A = data.getResource(eg + "A");
+		printStatements(A, null, null);
 	}
 }
