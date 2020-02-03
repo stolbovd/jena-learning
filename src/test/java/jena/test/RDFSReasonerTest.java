@@ -16,18 +16,19 @@ public class RDFSReasonerTest extends ReasonerTest {
 
 	@Before
 	public void init() {
-		schema = FileManager.get().loadModel("data/rdfsDemoSchema.n3","N3");
+		schema = FileManager.get().loadModel("data/rdfsDemoSchema.n3", "N3");
 		data = FileManager.get().loadModel("data/rdfsDemoData.n3", "N3");
 		infmodel = ModelFactory.createRDFSModel(schema, data);
 	}
 
 	@Test
 	public void objectTypes() {
-		Resource colin = infmodel.getResource(NS+"colin");
+		Resource colin = infmodel.getResource(NS + "colin");
 		System.out.println("colin has types:");
 		printStatements(colin, RDF.type, null);
 
-		Resource person = infmodel.getResource(NS+"Person");
+		Resource person = infmodel.getResource(NS + "Person");
 		System.out.println("\nPerson has types:");
-		printStatements(person, RDF.type, null);	}
+		printStatements(person, RDF.type, null);
+	}
 }

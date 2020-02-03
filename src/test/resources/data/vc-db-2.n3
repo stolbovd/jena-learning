@@ -1,0 +1,32 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vCard: <http://www.w3.org/2001/vcard-rdf/3.0#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix somewhere: <http://somewhere#> .
+@prefix info: <http://somewhere/peopleInfo#> .
+@prefix : <#> .
+
+somewhere:MattJones
+  a foaf:Person ;
+  vCard:FN "Matt Jones" ;
+  vCard:N [vCard:Family "Jones" ;
+           vCard:Given "Matthew"] .
+
+somewhere:RebeccaSmith
+  a foaf:Person ;
+  info:age 23 ;
+  vCard:FN "Becky Smith" ;
+  vCard:N [vCard:Family "Smith" ;
+           vCard:Given "Rebecca"] .
+
+somewhere:JohnSmith
+  a foaf:Person ;
+  info:age 25 ;
+  vCard:FN "John Smith" ;
+  vCard:N [vCard:Family "Smith" ;
+           vCard:Given "John"] .
+
+somewhere:SarahJones
+  a foaf:Person ;
+  vCard:FN "Sarah Jones" ;
+  vCard:N [vCard:Family "Jones" ;
+           vCard:Given "Sarah"] .

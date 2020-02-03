@@ -14,14 +14,10 @@ import java.util.Optional;
  * Code has based on https://jena.apache.org/documentation/inference/
  */
 @Slf4j
-public class ReasonerTest {
+public class ReasonerTest extends JenaTest {
 
-	Model schema;
-	Model data;
 	InfModel infmodel;
 	Reasoner reasoner;
-
-	String NS = "urn:x-hp:eg/";
 
 	public void printStatements(Resource s, Property p, Resource o) {
 		printStatements(infmodel.listStatements(s, p, o));
@@ -44,10 +40,6 @@ public class ReasonerTest {
 				System.out.println(" - " + i.next());
 			}
 		}
-	}
-
-	public void printTurtle(Model model) {
-		model.write(System.out, "N3");
 	}
 
 	@Test
