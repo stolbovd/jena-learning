@@ -1,0 +1,15 @@
+#option 1
+#[transitiveRule: (?A demo:p ?B), (?B demo:p ?C) -> (?A demo:p ?C) ]
+#[symmetricRule: (?Y demo:p ?X) -> (?X demo:p ?Y) ]
+
+#option 2
+#[transitiveRule: (?P rdf:type demo:TransProp)(?A ?P ?B), (?B ?P ?C) -> (?A ?P ?C) ]
+#[symmetricRule: (?P rdf:type demo:TransProp)(?Y ?P ?X) -> (?X ?P ?Y) ]
+
+#option 3
+-> tableAll().
+[rule1: (?P rdf:type demo:TransProp) ->
+      [ (?X ?P ?Y) <- (?Y ?P ?X) ]
+      [ (?A ?P ?C) <- (?A ?P ?B), (?B ?P ?C) ]
+]
+

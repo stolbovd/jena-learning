@@ -1,0 +1,29 @@
+@prefix : <urn:x-hp:eg/> .
+@prefix eg: <urn:x-hp:eg/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.w3.org/2002/07/owl#> .
+
+[rdf:type owl:Ontology] .
+
+eg:parent
+  rdf:type owl:AnnotationProperty ;
+  rdfs:domain eg:Person .
+
+eg:mum
+  rdf:type owl:ObjectProperty ;
+  rdfs:subPropertyOf eg:parent .
+
+eg:parent
+  rdf:type owl:ObjectProperty ;
+  rdfs:range eg:Person .
+
+eg:age
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:integer .
+
+eg:Person
+  rdf:type owl:Class .
