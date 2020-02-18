@@ -1,0 +1,363 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+          xml:base="http://www.ontorion.com/ontologies/Ontology217eefeb81ec46e385edd31248f41bf7#"
+          ontologyIRI="http://www.ontorion.com/ontologies/Ontology217eefeb81ec46e385edd31248f41bf7#">
+	<Prefix name=""
+	        IRI="http://www.ontorion.com/ontologies/Ontology217eefeb81ec46e385edd31248f41bf7#"/>
+	<Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+	<Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+	<Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+	<Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+	<ClassAssertion>
+		<Class IRI="Giraffe"/>
+		<NamedIndividual IRI="Sophie"/>
+	</ClassAssertion>
+	<ClassAssertion>
+		<Class IRI="Lion"/>
+		<NamedIndividual IRI="Leo"/>
+	</ClassAssertion>
+	<SubClassOf>
+		<Class IRI="Lion"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Giraffe"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Impala"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Omnivore"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="RockDassie"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Warthog"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Carnivore"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Herbivore"/>
+		<Class IRI="Animal"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Elephant"/>
+		<Class IRI="Herbivore"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Tree"/>
+		<Class IRI="Plant"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Grass"/>
+		<Class IRI="Plant"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="PalmTree"/>
+		<Class IRI="Plant"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="TastyPlant"/>
+		<Class IRI="Plant"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="CarnivorousPlant"/>
+		<Class IRI="Plant"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Branch"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Phloem"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Root"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Parsnip"/>
+		<Class IRI="Root"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Stem"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Twig"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Xylem"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Leaf"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="FruitingBody"/>
+		<Class IRI="PlantPart"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Berry"/>
+		<Class IRI="FruitingBody"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Apple"/>
+		<Class IRI="FruitingBody"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Animal"/>
+		<ObjectComplementOf>
+			<Class IRI="Plant"/>
+		</ObjectComplementOf>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Giraffe"/>
+		<ObjectComplementOf>
+			<Class IRI="Lion"/>
+		</ObjectComplementOf>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="PalmTree"/>
+		<ObjectComplementOf>
+			<Class IRI="Tree"/>
+		</ObjectComplementOf>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Lion"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="eats"/>
+			<Class IRI="Impala"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="CarnivorousPlant"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="eats"/>
+			<Class IRI="Animal"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Branch"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="isPartOf"/>
+			<Class IRI="Tree"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="PlantPart"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="isProperPartOf"/>
+			<Class IRI="Plant"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Xylem"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="isProperPartOf"/>
+			<Class IRI="Stem"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Phloem"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="isProperPartOf"/>
+			<Class IRI="Stem"/>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Lion"/>
+		<ObjectAllValuesFrom>
+			<ObjectProperty IRI="eats"/>
+			<Class IRI="Herbivore"/>
+		</ObjectAllValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="PalmTree"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="hasPart"/>
+			<ObjectComplementOf>
+				<Class IRI="Branch"/>
+			</ObjectComplementOf>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Warthog"/>
+		<ObjectIntersectionOf>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="Animal"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="FruitingBody"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="Grass"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="Root"/>
+			</ObjectSomeValuesFrom>
+		</ObjectIntersectionOf>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Giraffe"/>
+		<ObjectAllValuesFrom>
+			<ObjectProperty IRI="eats"/>
+			<ObjectUnionOf>
+				<Class IRI="Leaf"/>
+				<Class IRI="Twig"/>
+			</ObjectUnionOf>
+		</ObjectAllValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Leaf"/>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="isPartOf"/>
+			<ObjectUnionOf>
+				<Class IRI="Branch"/>
+				<Class IRI="Twig"/>
+			</ObjectUnionOf>
+		</ObjectSomeValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="TastyPlant"/>
+		<ObjectIntersectionOf>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="isEatenBy"/>
+				<Class IRI="Carnivore"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="isEatenBy"/>
+				<Class IRI="Herbivore"/>
+			</ObjectSomeValuesFrom>
+		</ObjectIntersectionOf>
+	</SubClassOf>
+	<ObjectPropertyRange>
+		<ObjectProperty IRI="eats"/>
+		<ObjectUnionOf>
+			<Class IRI="Animal"/>
+			<Class IRI="Plant"/>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="isPartOf"/>
+				<Class IRI="Animal"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="isPartOf"/>
+				<Class IRI="Plant"/>
+			</ObjectSomeValuesFrom>
+		</ObjectUnionOf>
+	</ObjectPropertyRange>
+	<SubClassOf>
+		<Class abbreviatedIRI="owl:Thing"/>
+		<ObjectComplementOf>
+			<ObjectHasSelf>
+				<ObjectProperty IRI="isProperPartOf"/>
+			</ObjectHasSelf>
+		</ObjectComplementOf>
+	</SubClassOf>
+	<EquivalentClasses>
+		<Class IRI="Carnivore"/>
+		<ObjectUnionOf>
+			<ObjectAllValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="Animal"/>
+			</ObjectAllValuesFrom>
+			<ObjectAllValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<ObjectSomeValuesFrom>
+					<ObjectProperty IRI="isPartOf"/>
+					<Class IRI="Animal"/>
+				</ObjectSomeValuesFrom>
+			</ObjectAllValuesFrom>
+		</ObjectUnionOf>
+	</EquivalentClasses>
+	<EquivalentClasses>
+		<Class IRI="Omnivore"/>
+		<ObjectIntersectionOf>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="Animal"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="Plant"/>
+			</ObjectSomeValuesFrom>
+			<ObjectSomeValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<ObjectUnionOf>
+					<ObjectSomeValuesFrom>
+						<ObjectProperty IRI="isPartOf"/>
+						<Class IRI="Animal"/>
+					</ObjectSomeValuesFrom>
+					<ObjectSomeValuesFrom>
+						<ObjectProperty IRI="isPartOf"/>
+						<Class IRI="Plant"/>
+					</ObjectSomeValuesFrom>
+				</ObjectUnionOf>
+			</ObjectSomeValuesFrom>
+		</ObjectIntersectionOf>
+	</EquivalentClasses>
+	<EquivalentClasses>
+		<Class IRI="Herbivore"/>
+		<ObjectUnionOf>
+			<ObjectAllValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<Class IRI="Plant"/>
+			</ObjectAllValuesFrom>
+			<ObjectAllValuesFrom>
+				<ObjectProperty IRI="eats"/>
+				<ObjectSomeValuesFrom>
+					<ObjectProperty IRI="isPartOf"/>
+					<Class IRI="Plant"/>
+				</ObjectSomeValuesFrom>
+			</ObjectAllValuesFrom>
+		</ObjectUnionOf>
+	</EquivalentClasses>
+	<DisjointClasses>
+		<Class IRI="Carnivore"/>
+		<Class IRI="Herbivore"/>
+		<Class IRI="Omnivore"/>
+	</DisjointClasses>
+	<DisjointClasses>
+		<Class IRI="Branch"/>
+		<Class IRI="Leaf"/>
+		<Class IRI="Twig"/>
+	</DisjointClasses>
+	<EquivalentObjectProperties>
+		<ObjectProperty IRI="hasPart"/>
+		<ObjectInverseOf>
+			<ObjectProperty IRI="isPartOf"/>
+		</ObjectInverseOf>
+	</EquivalentObjectProperties>
+	<EquivalentObjectProperties>
+		<ObjectProperty IRI="eats"/>
+		<ObjectInverseOf>
+			<ObjectProperty IRI="isEatenBy"/>
+		</ObjectInverseOf>
+	</EquivalentObjectProperties>
+	<SubObjectPropertyOf>
+		<ObjectProperty IRI="isProperPartOf"/>
+		<ObjectProperty IRI="isPartOf"/>
+	</SubObjectPropertyOf>
+	<TransitiveObjectProperty>
+		<ObjectProperty IRI="hasPart"/>
+	</TransitiveObjectProperty>
+	<TransitiveObjectProperty>
+		<ObjectProperty IRI="isPartOf"/>
+	</TransitiveObjectProperty>
+</Ontology>
+		<!--Generated by Cognitum FluentEditor2015, a part of Ontorion(TM) Knowledge Management Framework, (with support of OwlApi)-->

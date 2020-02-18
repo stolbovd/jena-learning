@@ -1,0 +1,254 @@
+@prefix : <http://www.ontorion.com/ontologies/Ontology217eefeb81ec46e385edd31248f41bf7#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.ontorion.com/ontologies/Ontology217eefeb81ec46e385edd31248f41bf7#> .
+
+<http://www.ontorion.com/ontologies/Ontology217eefeb81ec46e385edd31248f41bf7#>
+  rdf:type owl:Ontology .
+
+:eats
+  rdf:type owl:ObjectProperty ;
+  owl:equivalentProperty [owl:inverseOf :isEatenBy] ;
+  rdfs:range [rdf:type owl:Class ;
+              owl:unionOf (:Animal
+                           :Plant
+                           [rdf:type owl:Restriction ;
+                            owl:onProperty :isPartOf ;
+                            owl:someValuesFrom :Animal]
+                           [rdf:type owl:Restriction ;
+                            owl:onProperty :isPartOf ;
+                            owl:someValuesFrom :Plant])] .
+
+:hasPart
+  rdf:type owl:ObjectProperty ;
+  owl:equivalentProperty [owl:inverseOf :isPartOf] ;
+  rdf:type owl:TransitiveProperty .
+
+
+:isEatenBy
+  rdf:type owl:ObjectProperty .
+
+:isPartOf
+  rdf:type owl:ObjectProperty, owl:TransitiveProperty .
+
+:isProperPartOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:subPropertyOf :isPartOf .
+
+:Animal
+  rdf:type owl:Class ;
+  rdfs:subClassOf [rdf:type owl:Class ;
+                   owl:complementOf :Plant] .
+
+:Apple
+  rdf:type owl:Class ;
+  rdfs:subClassOf :FruitingBody .
+
+:Berry
+  rdf:type owl:Class ;
+  rdfs:subClassOf :FruitingBody .
+
+:Branch
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart, [rdf:type owl:Restriction ;
+                               owl:onProperty :isPartOf ;
+                               owl:someValuesFrom :Tree] .
+
+:Carnivore
+  rdf:type owl:Class ;
+  owl:equivalentClass [rdf:type owl:Class ;
+                       owl:unionOf ([rdf:type owl:Restriction ;
+                                     owl:onProperty :eats ;
+                                     owl:allValuesFrom :Animal]
+                                    [rdf:type owl:Restriction ;
+                                     owl:onProperty :eats ;
+                                     owl:allValuesFrom [rdf:type owl:Restriction ;
+                                                        owl:onProperty :isPartOf ;
+                                                        owl:someValuesFrom :Animal]])] ;
+  rdfs:subClassOf :Animal .
+
+:CarnivorousPlant
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Plant, [rdf:type owl:Restriction ;
+                           owl:onProperty :eats ;
+                           owl:someValuesFrom :Animal] .
+
+:Elephant
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Herbivore .
+
+:FruitingBody
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart .
+
+:Giraffe
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Animal, [rdf:type owl:Class ;
+                            owl:complementOf :Lion], [rdf:type owl:Restriction ;
+                                                      owl:onProperty :eats ;
+                                                      owl:allValuesFrom [rdf:type owl:Class ;
+                                                                         owl:unionOf (:Leaf
+                                                                                      :Twig)]] .
+
+:Grass
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Plant .
+
+:Herbivore
+  rdf:type owl:Class ;
+  owl:equivalentClass [rdf:type owl:Class ;
+                       owl:unionOf ([rdf:type owl:Restriction ;
+                                     owl:onProperty :eats ;
+                                     owl:allValuesFrom :Plant]
+                                    [rdf:type owl:Restriction ;
+                                     owl:onProperty :eats ;
+                                     owl:allValuesFrom [rdf:type owl:Restriction ;
+                                                        owl:onProperty :isPartOf ;
+                                                        owl:someValuesFrom :Plant]])] ;
+  rdfs:subClassOf :Animal .
+
+:Impala
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Animal .
+
+:Leaf
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart, [rdf:type owl:Restriction ;
+                               owl:onProperty :isPartOf ;
+                               owl:someValuesFrom [rdf:type owl:Class ;
+                                                   owl:unionOf (:Branch
+                                                                :Twig)]] .
+
+:Lion
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Animal, [rdf:type owl:Restriction ;
+                            owl:onProperty :eats ;
+                            owl:someValuesFrom :Impala], [rdf:type owl:Restriction ;
+                                                          owl:onProperty :eats ;
+                                                          owl:allValuesFrom :Herbivore] .
+
+:Omnivore
+  rdf:type owl:Class ;
+  owl:equivalentClass [owl:intersectionOf ([rdf:type owl:Restriction ;
+                                            owl:onProperty :eats ;
+                                            owl:someValuesFrom :Animal]
+                                           [rdf:type owl:Restriction ;
+                                            owl:onProperty :eats ;
+                                            owl:someValuesFrom :Plant]
+                                           [rdf:type owl:Restriction ;
+                                            owl:onProperty :eats ;
+                                            owl:someValuesFrom [rdf:type owl:Class ;
+                                                                owl:unionOf ([rdf:type owl:Restriction ;
+                                                                              owl:onProperty :isPartOf ;
+                                                                              owl:someValuesFrom :Animal]
+                                                                             [rdf:type owl:Restriction ;
+                                                                              owl:onProperty :isPartOf ;
+                                                                              owl:someValuesFrom :Plant])]]) ;
+                       rdf:type owl:Class] ;
+  rdfs:subClassOf :Animal .
+
+:PalmTree
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Plant, [rdf:type owl:Class ;
+                           owl:complementOf :Tree], [rdf:type owl:Restriction ;
+                                                     owl:onProperty :hasPart ;
+                                                     owl:someValuesFrom [rdf:type owl:Class ;
+                                                                         owl:complementOf :Branch]] .
+
+:Parsnip
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Root .
+
+:Phloem
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart, [rdf:type owl:Restriction ;
+                               owl:onProperty :isProperPartOf ;
+                               owl:someValuesFrom :Stem] .
+
+:Plant
+  rdf:type owl:Class .
+
+:PlantPart
+  rdf:type owl:Class ;
+  rdfs:subClassOf [rdf:type owl:Restriction ;
+                   owl:onProperty :isProperPartOf ;
+                   owl:someValuesFrom :Plant] .
+
+:RockDassie
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Animal .
+
+:Root
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart .
+
+:Stem
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart .
+
+:TastyPlant
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Plant, [owl:intersectionOf ([rdf:type owl:Restriction ;
+                                                owl:onProperty :isEatenBy ;
+                                                owl:someValuesFrom :Carnivore]
+                                               [rdf:type owl:Restriction ;
+                                                owl:onProperty :isEatenBy ;
+                                                owl:someValuesFrom :Herbivore]) ;
+                           rdf:type owl:Class] .
+
+:Tree
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Plant .
+
+:Twig
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart .
+
+:Warthog
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Animal, [owl:intersectionOf ([rdf:type owl:Restriction ;
+                                                 owl:onProperty :eats ;
+                                                 owl:someValuesFrom :Animal]
+                                                [rdf:type owl:Restriction ;
+                                                 owl:onProperty :eats ;
+                                                 owl:someValuesFrom :FruitingBody]
+                                                [rdf:type owl:Restriction ;
+                                                 owl:onProperty :eats ;
+                                                 owl:someValuesFrom :Grass]
+                                                [rdf:type owl:Restriction ;
+                                                 owl:onProperty :eats ;
+                                                 owl:someValuesFrom :Root]) ;
+                            rdf:type owl:Class] .
+
+:Xylem
+  rdf:type owl:Class ;
+  rdfs:subClassOf :PlantPart, [rdf:type owl:Restriction ;
+                               owl:onProperty :isProperPartOf ;
+                               owl:someValuesFrom :Stem] .
+
+
+owl:Thing
+  rdfs:subClassOf [rdf:type owl:Class ;
+                   owl:complementOf [rdf:type owl:Restriction ;
+                                     owl:onProperty :isProperPartOf ;
+                                     owl:hasSelf "true"^^xsd:boolean]] .
+
+:Leo
+  rdf:type owl:NamedIndividual, :Lion .
+
+:Sophie
+  rdf:type owl:NamedIndividual, :Giraffe .
+
+[rdf:type owl:AllDisjointClasses ;
+ owl:members (:Branch
+              :Leaf
+              :Twig)] .
+
+
+[rdf:type owl:AllDisjointClasses ;
+ owl:members (:Carnivore
+              :Herbivore
+              :Omnivore)] .
