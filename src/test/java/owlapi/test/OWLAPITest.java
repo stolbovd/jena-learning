@@ -7,12 +7,17 @@ package owlapi.test;
 import com.github.owlcs.ontapi.OntManagers;
 import org.junit.Test;
 import org.semanticweb.HermiT.ReasonerFactory;
+import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
+import org.semanticweb.owlapi.io.StreamDocumentTarget;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.*;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.util.InferredOntologyGenerator;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -52,6 +57,13 @@ public class OWLAPITest {
 				System.out.println(" " + ind);
 			}
 		}
+
+		OutputStream outputStream = new FileOutputStream("src/test/resources/data/family-inferred.ttl");
+		OWLOntology exportedOntology = manager.createOntology(IRI.create("http://example.com/owl/families/"));
+		InferredOntologyGenerator generator = new InferredOntologyGenerator(reasoner);
+		generator.fillOntology(manager.getOWLDataFactory(), exportedOntology);
+		manager.saveOntology(exportedOntology, new TurtleDocumentFormat(),
+				new StreamDocumentTarget(outputStream));
 	}
 
 	public static final String KOALA = "<?xml version=\"1.0\"?>\n"
