@@ -6,15 +6,13 @@ package owlapi.test;
 
 import com.github.owlcs.ontapi.OntManagers;
 import org.junit.Test;
+import org.semanticweb.HermiT.ReasonerFactory;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.reasoner.Node;
-import org.semanticweb.owlapi.reasoner.NodeSet;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
-import org.semanticweb.owlapi.reasoner.structural.StructuralReasonerFactory;
+import org.semanticweb.owlapi.reasoner.*;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -28,6 +26,33 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asUnorderedSet;
  * Thanks for Authors
  */
 public class OWLAPITest {
+
+	@Test
+	public void owl2Resonate() throws Exception {
+		OWLOntologyManager manager = OntManagers.createONT();
+		InputStream inputStream = this.getClass().getResourceAsStream("/data/family.ttl");
+		OWLOntology ont = manager.loadOntologyFromOntologyDocument(inputStream);
+		OWLReasonerFactory reasonerFactory = new ReasonerFactory();
+		OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
+		OWLDataFactory dataFactory = manager.getOWLDataFactory();
+		OWLClass classExplored = dataFactory.getOWLClass("http://example.com/owl/families/",
+				"Teenager");
+		Set<OWLClass> subClasses = asSet(reasoner.subClasses(classExplored, true));
+		if (!subClasses.isEmpty()) {
+			System.out.println("There are subclasses:");
+			for (OWLClass subClass : subClasses) {
+				System.out.println(" " + subClass);
+			}
+		}
+		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(classExplored, false);
+		Set<OWLNamedIndividual> individuals = asSet(individualsNodeSet.entities());
+		if (!individuals.isEmpty()) {
+			System.out.println("There are individuals:");
+			for (OWLNamedIndividual ind : individuals) {
+				System.out.println(" " + ind);
+			}
+		}
+	}
 
 	public static final String KOALA = "<?xml version=\"1.0\"?>\n"
 			+ "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns=\"http://protege.stanford.edu/plugins/owl/owl-library/koala.owl#\" xml:base=\"http://protege.stanford.edu/plugins/owl/owl-library/koala.owl\">\n"
@@ -61,8 +86,6 @@ public class OWLAPITest {
 	 * An example which shows how to interact with a reasoner. In this example
 	 * Pellet is used as the reasoner. You must get hold of the pellet libraries
 	 * from pellet.owldl.com.
-	 *
-	 * @throws Exception exception
 	 */
 	@Test
 	public void shouldUseReasoner() throws Exception {
@@ -83,9 +106,8 @@ public class OWLAPITest {
 		// first line below and uncomment the second line below to instantiate
 		// the HermiT reasoner factory. You'll also need to import the
 		// org.semanticweb.HermiT.Reasoner package.
-		OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
-		//ToDo HermiT не работает	 OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
-
+//		OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
+		OWLReasonerFactory reasonerFactory = new ReasonerFactory();
 		// We'll now create an instance of an OWLReasoner (the implementation
 		// being provided by HermiT as we're using the HermiT reasoner factory).
 		// The are two categories of reasoner, Buffering and NonBuffering. In
@@ -94,23 +116,21 @@ public class OWLAPITest {
 		// reasoner. To do this we set up a configuration that knows about a
 		// progress monitor. Create a console progress monitor. This will print
 		// the reasoner progress out to the console.
-		// ConsoleProgressMonitor progressMonitor = new
-		// ConsoleProgressMonitor();
+		ConsoleProgressMonitor progressMonitor = new ConsoleProgressMonitor();
 		// Specify the progress monitor via a configuration. We could also
 		// specify other setup parameters in the configuration, and different
 		// reasoners may accept their own defined parameters this way.
-		// OWLReasonerConfiguration config = new SimpleConfiguration(
-		// progressMonitor);
+		OWLReasonerConfiguration config = new SimpleConfiguration(progressMonitor);
 		// Create a reasoner that will reason over our ontology and its imports
 		// closure. Pass in the configuration.
-		// OWLReasoner reasoner = reasonerFactory.createReasoner(ont, config);
-		OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
+		OWLReasoner reasoner = reasonerFactory.createReasoner(ont, config);
+//		OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
 		// Ask the reasoner to do all the necessary work now
 		reasoner.precomputeInferences();
 		// We can determine if the ontology is actually consistent (in this
 		// case, it should be).
 		boolean consistent = reasoner.isConsistent();
-		// System.out.println("Consistent: " + consistent);
+		System.out.println("Consistent: " + consistent);
 		// We can easily get a list of unsatisfiable classes. (A class is
 		// unsatisfiable if it can't possibly have any instances). Note that the
 		// getUnsatisfiableClasses method is really just a convenience method
@@ -122,7 +142,7 @@ public class OWLAPITest {
 		// and we can used a convenience method on the node to get these
 		Set<OWLClass> unsatisfiable = bottomNode.getEntitiesMinusBottom();
 		if (!unsatisfiable.isEmpty()) {
-			// System.out.println("The following classes are unsatisfiable: ");
+			System.out.println("The following classes are unsatisfiable: ");
 			for (OWLClass cls : unsatisfiable) {
 				System.out.println(" " + cls);
 			}
