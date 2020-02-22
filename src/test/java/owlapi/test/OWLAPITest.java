@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.*;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.InferredOntologyGenerator;
+import org.semanticweb.owlapi.util.OWLOntologyMerger;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -72,12 +73,21 @@ public class OWLAPITest {
 			}
 		}
 		//save inferred model
+		OWLOntology exportedOntology = manager.createOntology(IRI.create(family));
 		InferredOntologyGenerator generator = new InferredOntologyGenerator(reasoner);
-		generator.fillOntology(dataFactory, ontology);
-		OutputStream outputStream = new FileOutputStream("src/test/resources/data/family-inferred.ttl");
+		generator.fillOntology(dataFactory, exportedOntology);
 		TurtleDocumentFormat format = new TurtleDocumentFormat();
 		format.setPrefix("", family);
+		OutputStream outputStream = new FileOutputStream("src/test/resources/data/family-inferred.ttl");
+		manager.saveOntology(exportedOntology, format, new StreamDocumentTarget(outputStream));
+		outputStream = new FileOutputStream("src/test/resources/data/family-base.ttl");
 		manager.saveOntology(ontology, format, new StreamDocumentTarget(outputStream));
+
+		//merge
+		OWLOntologyMerger merger = new OWLOntologyMerger(manager);
+		OWLOntology merged = merger.createMergedOntology(manager, IRI.create(family+"merged"));
+		outputStream = new FileOutputStream("src/test/resources/data/family-merged.ttl");
+		manager.saveOntology(merged, format, new StreamDocumentTarget(outputStream));
 	}
 
 	public static final String KOALA = "<?xml version=\"1.0\"?>\n"
