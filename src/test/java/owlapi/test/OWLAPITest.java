@@ -32,38 +32,52 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asUnorderedSet;
  */
 public class OWLAPITest {
 
+	final String family = "http://example.com/owl/families/";
+
 	@Test
 	public void owl2Resonate() throws Exception {
+		//open Ontology
 		OWLOntologyManager manager = OntManagers.createONT();
 		InputStream inputStream = this.getClass().getResourceAsStream("/data/family.ttl");
-		OWLOntology ont = manager.loadOntologyFromOntologyDocument(inputStream);
-		OWLReasonerFactory reasonerFactory = new ReasonerFactory();
-		OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
+		OWLOntology ontology = manager.loadOntologyFromOntologyDocument(inputStream);
 		OWLDataFactory dataFactory = manager.getOWLDataFactory();
-		OWLClass classExplored = dataFactory.getOWLClass("http://example.com/owl/families/",
-				"Teenager");
+
+		//reasoner
+		OWLReasonerFactory reasonerFactory = new ReasonerFactory();
+		OWLReasoner reasoner = reasonerFactory.createReasoner(ontology);
+		//isConsistent
+		reasoner.precomputeInferences();
+		System.out.println("Consistent: " + reasoner.isConsistent());
+
+		//classExplored
+		String explored = "HappyPerson";
+		OWLClass classExplored = dataFactory.getOWLClass(family,
+				explored);
+//				"Teenager");
+		//subClasses
 		Set<OWLClass> subClasses = asSet(reasoner.subClasses(classExplored, true));
 		if (!subClasses.isEmpty()) {
-			System.out.println("There are subclasses:");
+			System.out.println("There are subclasses of " + explored + ":");
 			for (OWLClass subClass : subClasses) {
 				System.out.println(" " + subClass);
 			}
 		}
+		//individuals
 		NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(classExplored, false);
 		Set<OWLNamedIndividual> individuals = asSet(individualsNodeSet.entities());
 		if (!individuals.isEmpty()) {
-			System.out.println("There are individuals:");
+			System.out.println("There are individuals of " + explored + ":");
 			for (OWLNamedIndividual ind : individuals) {
 				System.out.println(" " + ind);
 			}
 		}
-
-		OutputStream outputStream = new FileOutputStream("src/test/resources/data/family-inferred.ttl");
-		OWLOntology exportedOntology = manager.createOntology(IRI.create("http://example.com/owl/families/"));
+		//save inferred model
 		InferredOntologyGenerator generator = new InferredOntologyGenerator(reasoner);
-		generator.fillOntology(manager.getOWLDataFactory(), exportedOntology);
-		manager.saveOntology(exportedOntology, new TurtleDocumentFormat(),
-				new StreamDocumentTarget(outputStream));
+		generator.fillOntology(dataFactory, ontology);
+		OutputStream outputStream = new FileOutputStream("src/test/resources/data/family-inferred.ttl");
+		TurtleDocumentFormat format = new TurtleDocumentFormat();
+		format.setPrefix("", family);
+		manager.saveOntology(ontology, format, new StreamDocumentTarget(outputStream));
 	}
 
 	public static final String KOALA = "<?xml version=\"1.0\"?>\n"

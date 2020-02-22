@@ -1,0 +1,181 @@
+Prefix(:=<http://example.com/owl/families/>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(
+Declaration(Class(:ChildlessPerson))
+Declaration(Class(:Father))
+Declaration(Class(:Grandfather))
+Declaration(Class(:HappyPerson))
+Declaration(Class(:Human))
+Declaration(Class(:JohnsChildren))
+Declaration(Class(:Man))
+Declaration(Class(:Mother))
+Declaration(Class(:Parent))
+Declaration(Class(:Person))
+Declaration(Class(:Teenager))
+Declaration(Class(:Toddler))
+Declaration(Class(:Woman))
+Declaration(Class(<http://org.semanticweb.owlapi/error#Error52>))
+Declaration(Class(<http://org.semanticweb.owlapi/error#Error53>))
+Declaration(Class(rdfs:DataType))
+Declaration(ObjectProperty(:hasChild))
+Declaration(ObjectProperty(:hasFather))
+Declaration(ObjectProperty(:hasGrandparent))
+Declaration(ObjectProperty(:hasParent))
+Declaration(ObjectProperty(:hasRelative))
+Declaration(ObjectProperty(:hasSpouse))
+Declaration(ObjectProperty(:hasWife))
+Declaration(ObjectProperty(:parentOf))
+Declaration(DataProperty(:hasAge))
+Declaration(NamedIndividual(:Irina))
+Declaration(NamedIndividual(:John))
+Declaration(NamedIndividual(:Mary))
+Declaration(NamedIndividual(:Susan))
+Declaration(AnnotationProperty(xsd:maxInclusive))
+Declaration(AnnotationProperty(xsd:minExclusive))
+
+############################
+#   Object Properties
+############################
+
+# Object Property: :hasChild (:hasChild)
+
+InverseObjectProperties(:hasChild :hasParent)
+AsymmetricObjectProperty(:hasChild)
+
+# Object Property: :hasFather (:hasFather)
+
+SubObjectPropertyOf(:hasFather :hasParent)
+
+# Object Property: :hasParent (:hasParent)
+
+DisjointObjectProperties(:hasParent :hasSpouse)
+
+# Object Property: :hasRelative (:hasRelative)
+
+ReflexiveObjectProperty(:hasRelative)
+
+# Object Property: :hasSpouse (:hasSpouse)
+
+SymmetricObjectProperty(:hasSpouse)
+
+# Object Property: :hasWife (:hasWife)
+
+SubObjectPropertyOf(:hasWife :hasSpouse)
+ObjectPropertyDomain(:hasWife :Man)
+ObjectPropertyRange(:hasWife :Woman)
+
+# Object Property: :parentOf (:parentOf)
+
+IrreflexiveObjectProperty(:parentOf)
+
+
+############################
+#   Data Properties
+############################
+
+# Data Property: :hasAge (:hasAge)
+
+FunctionalDataProperty(:hasAge)
+DataPropertyDomain(:hasAge :Person)
+DataPropertyRange(:hasAge xsd:integer)
+
+
+
+############################
+#   Classes
+############################
+
+# Class: :ChildlessPerson (:ChildlessPerson)
+
+EquivalentClasses(:ChildlessPerson ObjectIntersectionOf(:Person ObjectComplementOf(:Parent)))
+
+# Class: :Father (:Father)
+
+EquivalentClasses(:Father ObjectIntersectionOf(:Man :Parent))
+
+# Class: :Grandfather (:Grandfather)
+
+SubClassOf(:Grandfather ObjectIntersectionOf(:Man :Parent))
+
+# Class: :HappyPerson (:HappyPerson)
+
+EquivalentClasses(:HappyPerson <http://org.semanticweb.owlapi/error#Error52>)
+EquivalentClasses(:HappyPerson ObjectAllValuesFrom(:hasChild <http://org.semanticweb.owlapi/error#Error52>))
+
+# Class: :Human (:Human)
+
+EquivalentClasses(:Human :Person)
+
+# Class: :JohnsChildren (:JohnsChildren)
+
+EquivalentClasses(:JohnsChildren ObjectHasValue(:hasParent :John))
+
+# Class: :Man (:Man)
+
+SubClassOf(:Man :Person)
+DisjointClasses(:Man :Woman)
+
+# Class: :Mother (:Mother)
+
+EquivalentClasses(:Mother ObjectIntersectionOf(:Parent :Woman))
+
+# Class: :Parent (:Parent)
+
+EquivalentClasses(:Parent ObjectUnionOf(:Father :Mother))
+EquivalentClasses(:Parent ObjectSomeValuesFrom(:hasChild :Person))
+
+# Class: :Person (:Person)
+
+AnnotationAssertion(rdfs:comment :Person "Represents the set of all people."^^xsd:string)
+
+# Class: :Teenager (:Teenager)
+
+EquivalentClasses(:Teenager ObjectSomeValuesFrom(:hasAge <http://org.semanticweb.owlapi/error#Error53>))
+
+# Class: :Toddler (:Toddler)
+
+EquivalentClasses(:Toddler DataSomeValuesFrom(:hasAge DataOneOf("1"^^xsd:integer "2"^^xsd:integer)))
+
+# Class: :Woman (:Woman)
+
+SubClassOf(:Woman :Person)
+
+
+############################
+#   Named Individuals
+############################
+
+# Individual: :Irina (:Irina)
+
+ClassAssertion(:HappyPerson :Irina)
+DataPropertyAssertion(:hasAge :Irina "2"^^xsd:integer)
+
+# Individual: :John (:John)
+
+ClassAssertion(:Man :John)
+ObjectPropertyAssertion(:hasChild :John :Irina)
+ObjectPropertyAssertion(:hasChild :John :Susan)
+ObjectPropertyAssertion(:hasWife :John :Mary)
+DataPropertyAssertion(:hasAge :John "151"^^xsd:integer)
+
+# Individual: :Mary (:Mary)
+
+ClassAssertion(:Woman :Mary)
+
+# Individual: :Susan (:Susan)
+
+ClassAssertion(:HappyPerson :Susan)
+DataPropertyAssertion(:hasAge :Susan "15"^^xsd:integer)
+
+
+ClassAssertion(rdfs:DataType _:genid2147483705)
+SubObjectPropertyOf(ObjectPropertyChain(:hasParent :hasParent) :hasGrandparent)
+AnnotationAssertion(xsd:maxInclusive _:genid2147483706 "19"^^xsd:integer)
+AnnotationAssertion(xsd:minExclusive _:genid2147483707 "12"^^xsd:integer)
+)

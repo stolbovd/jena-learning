@@ -1,0 +1,32 @@
+Prefix(:=<http://example.com/owl/families/>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+Ontology (
+
+SubClassOf(
+   :Teenager
+   DataSomeValuesFrom( :hasAge
+     DatatypeRestriction( xsd:integer
+       xsd:minExclusive "12"^^xsd:integer
+       xsd:maxInclusive "19"^^xsd:integer
+     )
+   )
+ )
+
+EquivalentClasses(
+   :HappyPerson
+   ObjectAllValuesFrom( :hasChild :HappyPerson )
+ )
+
+ClassAssertion( :SocialRole :Father )
+
+SubObjectPropertyOf(
+   ObjectPropertyChain( :hasFather :hasBrother )
+   :hasUncle
+ )
+
+)

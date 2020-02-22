@@ -1,0 +1,47 @@
+@prefix : <http://example.com/owl/families/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+[a owl:Restriction ;
+ owl:allValuesFrom :HappyPerson ;
+ owl:equivalentClass :HappyPerson ;
+ owl:onProperty :hasChild] .
+
+:Teenager
+  a owl:Class ;
+  rdfs:subClassOf [a owl:Restriction ;
+                   owl:onProperty :hasAge ;
+                   owl:someValuesFrom [a rdfs:Datatype ;
+                                       owl:onDatatype xsd:integer ;
+                                       owl:withRestrictions ([xsd:minExclusive 12]
+                                                             [xsd:maxInclusive 19])]] .
+
+:Father
+  a :SocialRole, owl:NamedIndividual .
+
+:hasChild
+  a owl:ObjectProperty .
+
+:hasBrother
+  a owl:ObjectProperty .
+
+:hasAge
+  a owl:DatatypeProperty .
+
+[a owl:Ontology] .
+
+:hasUncle
+  a owl:ObjectProperty ;
+  owl:propertyChainAxiom (:hasFather :hasBrother) .
+
+:hasFather
+  a owl:ObjectProperty .
+
+:HappyPerson
+  a owl:Class .
+
+:SocialRole
+  a owl:Class .

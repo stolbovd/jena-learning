@@ -1,141 +1,197 @@
-@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix owl:   <http://www.w3.org/2002/07/owl#> .
-@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
-@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix : <http://example.com/owl/families/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-<http://example.com/owl/families/Grandfather>
-        a                owl:Class ;
-        rdfs:subClassOf  <http://example.com/owl/families/Father> .
+rdfs:DataType
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing .
 
-<http://example.com/owl/families/Mary>
-        a       <http://example.com/owl/families/Woman> , <http://example.com/owl/families/Person> , owl:Thing , <http://example.com/owl/families/Human> , owl:NamedIndividual ;
-        <http://example.com/owl/families/hasRelative>
-                <http://example.com/owl/families/Mary> ;
-        <http://example.com/owl/families/hasSpouse>
-                <http://example.com/owl/families/John> .
+:Mary
+  a owl:Thing, :Human, :Person, owl:NamedIndividual, :Woman ;
+  :hasRelative :Mary ;
+  :hasSpouse :John .
 
-<http://example.com/owl/families/Man>
-        a                owl:Class ;
-        rdfs:subClassOf  <http://example.com/owl/families/Human> , <http://example.com/owl/families/Person> .
+:hasAge
+  a owl:DatatypeProperty, owl:FunctionalProperty ;
+  rdfs:domain :Person ;
+  rdfs:range xsd:integer ;
+  rdfs:subPropertyOf owl:topDataProperty .
 
-<http://example.com/owl/families/parentOf>
-        a                   owl:IrreflexiveProperty , owl:ObjectProperty ;
-        rdfs:subPropertyOf  owl:topObjectProperty .
+[owl:equivalentProperty :hasChild ;
+ owl:inverseOf :hasParent] .
 
-<http://example.com/owl/families/Teenager>
-        a                owl:Class ;
-        rdfs:subClassOf  <http://example.com/owl/families/Person> , <http://example.com/owl/families/Human> .
+:hasUncle
+  a owl:ObjectProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+  owl:propertyChainAxiom (:hasParent :hasBrother) .
 
-<http://example.com/owl/families/hasRelative>
-        a                   owl:ReflexiveProperty , owl:ObjectProperty ;
-        rdfs:subPropertyOf  owl:topObjectProperty .
+:hasFather
+  a owl:IrreflexiveProperty, owl:AsymmetricProperty, owl:ObjectProperty ;
+  rdfs:subPropertyOf :hasParent ;
+  rdfs:subPropertyOf [owl:equivalentProperty :hasParent ;
+                      owl:inverseOf :hasChild] .
 
-<http://example.com/owl/families/Father>
-        a                <http://example.com/owl/families/SocialRole> , owl:Class , owl:Thing , owl:NamedIndividual ;
-        rdfs:subClassOf  <http://example.com/owl/families/Parent> , <http://example.com/owl/families/Man> ;
-        <http://example.com/owl/families/hasRelative>
-                <http://example.com/owl/families/Father> .
+:Grandfather
+  a owl:Class ;
+  rdfs:subClassOf :Father ;
+  rdfs:subClassOf [a owl:Class ;
+                   owl:intersectionOf (:Man :Parent)] .
 
-<http://example.com/owl/families/hasChild>
-        a                   owl:IrreflexiveProperty , owl:AsymmetricProperty , owl:ObjectProperty ;
-        rdfs:subPropertyOf  owl:topObjectProperty .
+[a owl:AllDisjointClasses ;
+ owl:members (:Woman :Man)] .
 
-<http://example.com/owl/families/hasWife>
-        a                   owl:IrreflexiveProperty , owl:AsymmetricProperty , owl:ObjectProperty ;
-        rdfs:subPropertyOf  <http://example.com/owl/families/hasSpouse> ;
-        rdfs:subPropertyOf  [ owl:equivalentProperty  <http://example.com/owl/families/hasSpouse> ;
-                              owl:inverseOf           <http://example.com/owl/families/hasSpouse>
-                            ] .
+:Toddler
+  a owl:Class ;
+  rdfs:subClassOf :Person, :Human ;
+  owl:equivalentClass [a owl:Restriction ;
+                       owl:onProperty :hasAge ;
+                       owl:someValuesFrom [a rdfs:Datatype ;
+                                           owl:oneOf (1 2)]] .
 
-<http://example.com/owl/families/Susan>
-        a       <http://example.com/owl/families/HappyPerson> , owl:Thing , <http://example.com/owl/families/Human> , owl:NamedIndividual , <http://example.com/owl/families/Person> , <http://example.com/owl/families/JohnsChildren> , <http://example.com/owl/families/Teenager> ;
-        <http://example.com/owl/families/hasAge>
-                15 ;
-        <http://example.com/owl/families/hasParent>
-                <http://example.com/owl/families/John> ;
-        <http://example.com/owl/families/hasRelative>
-                <http://example.com/owl/families/Susan> .
+:Mother
+  a owl:Class ;
+  rdfs:subClassOf :Woman, :Parent ;
+  owl:equivalentClass [a owl:Class ;
+                       owl:intersectionOf (:Woman :Parent)] .
 
-<http://example.com/owl/families/Mother>
-        a                owl:Class ;
-        rdfs:subClassOf  <http://example.com/owl/families/Woman> , <http://example.com/owl/families/Parent> .
+:Man
+  a owl:Class ;
+  rdfs:subClassOf :Human, :Person .
 
-<http://example.com/owl/families/hasParent>
-        a                   owl:AsymmetricProperty , owl:IrreflexiveProperty , owl:ObjectProperty ;
-        rdfs:subPropertyOf  owl:topObjectProperty ;
-        owl:inverseOf       <http://example.com/owl/families/hasChild> .
+:hasSpouse
+  a owl:ObjectProperty, owl:SymmetricProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+  owl:inverseOf :hasSpouse .
 
-[ owl:equivalentProperty  <http://example.com/owl/families/hasChild> ;
-  owl:inverseOf           <http://example.com/owl/families/hasParent>
-] .
+:John
+  a :Parent, owl:Thing, :Human, :Father, owl:NamedIndividual, :Person, :Man, :HappyPerson ;
+  :hasAge 151 ;
+  :hasBrother :Petr ;
+  :hasChild :Irina, :Susan ;
+  :hasRelative :John ;
+  :hasSpouse :Mary ;
+  :hasWife :Mary .
 
-<http://example.com/owl/families/JohnsChildren>
-        a                owl:Class ;
-        rdfs:subClassOf  owl:Thing .
+:SocialRole
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing .
 
-<http://example.com/owl/families/hasAge>
-        a                   owl:Class , owl:FunctionalProperty , owl:DatatypeProperty ;
-        rdfs:subClassOf     owl:Thing ;
-        rdfs:subPropertyOf  owl:topDataProperty .
+:ChildlessPerson
+  a owl:Class ;
+  rdfs:subClassOf :Human, :Person ;
+  owl:equivalentClass [a owl:Class ;
+                       owl:intersectionOf (:Person
+                                           [a owl:Class ;
+                                            owl:complementOf :Parent])] .
 
-<http://example.com/owl/families/Woman>
-        a                owl:Class ;
-        rdfs:subClassOf  <http://example.com/owl/families/Human> , <http://example.com/owl/families/Person> .
+:Person
+  a owl:Class ;
+  rdfs:comment "Represents the set of all people." ;
+  rdfs:subClassOf owl:Thing ;
+  owl:equivalentClass :Human .
 
-<http://example.com/owl/families/Person>
-        a                owl:Class ;
-        rdfs:subClassOf  owl:Thing .
+:Woman
+  a owl:Class ;
+  rdfs:subClassOf :Human, :Person .
 
-<http://example.com/owl/families/>
-        a       owl:Ontology .
+:Susan
+  a :HappyPerson, owl:Thing, :Human, owl:NamedIndividual, :Person, :JohnsChildren, :Teenager ;
+  :hasAge 15 ;
+  :hasParent :John ;
+  :hasRelative :Susan ;
+  :hasUncle :Petr .
 
-<http://example.com/owl/families/hasSpouse>
-        a                   owl:SymmetricProperty , owl:ObjectProperty ;
-        rdfs:subPropertyOf  owl:topObjectProperty ;
-        owl:inverseOf       <http://example.com/owl/families/hasSpouse> .
+:Parent
+  a owl:Thing, owl:NamedIndividual, owl:Class, :SocialRole ;
+  rdfs:subClassOf :Human, :Person ;
+  :hasRelative :Parent ;
+  owl:equivalentClass [a owl:Restriction ;
+                       owl:onProperty :hasChild ;
+                       owl:someValuesFrom :Person] ;
+  owl:equivalentClass [a owl:Class ;
+                       owl:unionOf (:Mother :Father)] .
 
-<http://example.com/owl/families/Human>
-        a                    owl:Class ;
-        rdfs:subClassOf      owl:Thing ;
-        owl:equivalentClass  <http://example.com/owl/families/Person> .
+:Irina
+  a :HappyPerson, :JohnsChildren, :Human, :Person, owl:NamedIndividual, :Toddler, owl:Thing ;
+  :hasAge 2 ;
+  :hasParent :John ;
+  :hasRelative :Irina ;
+  :hasUncle :Petr .
 
-<http://example.com/owl/families/hasGrandparent>
-        a                   owl:ObjectProperty ;
-        rdfs:subPropertyOf  owl:topObjectProperty .
+:hasGrandparent
+  a owl:ObjectProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+  owl:propertyChainAxiom (:hasParent :hasParent) .
 
-<http://example.com/owl/families/Parent>
-        a                owl:Class ;
-        rdfs:subClassOf  <http://example.com/owl/families/Human> , <http://example.com/owl/families/Person> .
+:parentOf
+  a owl:ObjectProperty, owl:IrreflexiveProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty .
 
-<http://example.com/owl/families/John>
-        a       <http://example.com/owl/families/Parent> , owl:Thing , <http://example.com/owl/families/Human> , <http://example.com/owl/families/Father> , owl:NamedIndividual , <http://example.com/owl/families/Person> , <http://example.com/owl/families/Man> ;
-        <http://example.com/owl/families/hasAge>
-                51 ;
-        <http://example.com/owl/families/hasChild>
-                <http://example.com/owl/families/Susan> ;
-        <http://example.com/owl/families/hasRelative>
-                <http://example.com/owl/families/John> ;
-        <http://example.com/owl/families/hasSpouse>
-                <http://example.com/owl/families/Mary> ;
-        <http://example.com/owl/families/hasWife>
-                <http://example.com/owl/families/Mary> .
+:hasBrother
+  a owl:ObjectProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty .
 
-<http://example.com/owl/families/hasFather>
-        a                   owl:IrreflexiveProperty , owl:AsymmetricProperty , owl:ObjectProperty ;
-        rdfs:subPropertyOf  <http://example.com/owl/families/hasParent> ;
-        rdfs:subPropertyOf  [ owl:equivalentProperty  <http://example.com/owl/families/hasParent> ;
-                              owl:inverseOf           <http://example.com/owl/families/hasChild>
-                            ] .
+:JohnsChildren
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing ;
+  owl:equivalentClass [a owl:Restriction ;
+                       owl:hasValue :John ;
+                       owl:onProperty :hasParent] .
 
-<http://example.com/owl/families/ChildlessPerson>
-        a                owl:Class ;
-        rdfs:subClassOf  <http://example.com/owl/families/Human> , <http://example.com/owl/families/Person> .
+:hasChild
+  a owl:IrreflexiveProperty, owl:ObjectProperty, owl:AsymmetricProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty .
 
-<http://example.com/owl/families/HappyPerson>
-        a                owl:Class ;
-        rdfs:subClassOf  owl:Thing .
+:hasWife
+  a owl:IrreflexiveProperty, owl:AsymmetricProperty, owl:ObjectProperty ;
+  rdfs:domain :Man ;
+  rdfs:range :Woman ;
+  rdfs:subPropertyOf :hasSpouse ;
+  rdfs:subPropertyOf [owl:equivalentProperty :hasSpouse ;
+                      owl:inverseOf :hasSpouse] .
 
-<http://example.com/owl/families/SocialRole>
-        a                owl:Class ;
-        rdfs:subClassOf  owl:Thing .
+:Teenager
+  a owl:Class ;
+  rdfs:subClassOf :Person, :Human ;
+  owl:equivalentClass [a owl:Restriction ;
+                       owl:onProperty :hasAge ;
+                       owl:someValuesFrom [a rdfs:Datatype, rdfs:DataType ;
+                                           owl:onDatatype xsd:integer ;
+                                           owl:withRestrictions ([xsd:minExclusive 12]
+                                                                 [xsd:maxInclusive 19])]] .
+
+:Father
+  a owl:Class ;
+  rdfs:subClassOf :Parent, :Man ;
+  owl:equivalentClass [a owl:Class ;
+                       owl:intersectionOf (:Man :Parent)] .
+
+:Human
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing .
+
+:HappyPerson
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing ;
+  owl:equivalentClass [a owl:Restriction ;
+                       owl:onProperty :hasChild ;
+                       owl:someValuesFrom :HappyPerson] .
+
+[a owl:Ontology] .
+
+:hasRelative
+  a owl:ObjectProperty, owl:ReflexiveProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty .
+
+:hasParent
+  a owl:AsymmetricProperty, owl:IrreflexiveProperty, owl:ObjectProperty ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+  owl:inverseOf :hasChild ;
+  owl:propertyDisjointWith :hasSpouse .
+
+:Petr
+  a owl:Thing, :Human, :Person, owl:NamedIndividual, :Man ;
+  :hasRelative :Petr .

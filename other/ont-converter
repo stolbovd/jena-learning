@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+#https://github.com/sszuev/ont-converter
+#cd src/test/resources/data
+#java -jar other/ont-converter.jar -i functional.owl -if 13 -o functional.ttl -of 0 -v
+
+cd /Users/stolbovd/IdeaProjects/jena-learning
+java -jar other/ont-converter.jar -i src/test/resources/data/functional.owl -if 13 -o src/test/resources/data/functional.ttl -of 0 -v
